@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "CanvasHelperExtension",
+  "version": "1.0",
+  "permissions": ["storage", "tabs", "activeTab", "scripting"],
+  "host_permissions": ["https://*.instructure.com/*"],
+  "background": {
+    "service_worker": "background.js" 
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.instructure.com/*"],
+      "js": ["contentScript.js"],
+       "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    },
+    "default_title": "Canvas Helper"
+  },
+  "web_accessible_resources": [
+  {
+    "resources": ["assets/study-set.png", "assets/study-set-hover.png"],
+    "matches": ["<all_urls>"]
+  }
+]
+
+}
