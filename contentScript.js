@@ -16,14 +16,12 @@
     };
   };
 
-  async function generateStudySet(content) {
+  async function generateStudyGuide(content) {
     try {
       const aiResponse = await chrome.runtime.sendMessage({
         type: "GENERATE_STUDY_SET",
-        content: "Generate a summary of the page in one short sentence.:\n" + JSON.stringify(content),
-      //Please generate a brief study guide based on the following content scraped from a Canvas course page. Organize the information into clear sections such as Key Concepts, Definitions, Important Dates, Study Questions, and Summary. Use bullet points and headings to make it easy to review. Here's the content:
+        content: JSON.stringify(content),
       });
-      console.log("AI Response:", aiResponse);
        
       return aiResponse;
     } catch (err) {
@@ -35,13 +33,15 @@
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "scrape") {
       (async () => {
-        const headings = [...document.querySelectorAll("h1, h2, h3")].map(h => h.textContent.trim());
+
+        // Scrape the content of the page. Update h1. 
+        const headings = [...document.querySelectorAll("h1, h2, h3, p")].map(h => h.textContent.trim());
         const links = [...document.querySelectorAll("a")].map(a => a.href);
 
         scrapedContent = { headings, links }; // assign to outer variable
 
         try {
-          const aiResponse = await generateStudySet(scrapedContent);
+          const aiResponse = await generateStudyGuide(scrapedContent);
           // currentStudySet = aiResponse;
           sendResponse( aiResponse ); 
         } catch (err) {

@@ -1,3 +1,5 @@
+
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (tab.url?.startsWith("chrome://")) return undefined;
   
@@ -25,6 +27,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "GENERATE_STUDY_SET") {
+
     (async () => {
       try {
         const res = await fetch("http://localhost:5000/generate", {
@@ -32,7 +35,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ content: message.content }),
+          body: JSON.stringify({ 
+            content: message.content 
+          }),
         });
 
         const data = await res.json();

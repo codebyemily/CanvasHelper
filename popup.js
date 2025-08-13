@@ -33,3 +33,4 @@ document.getElementById("scrapeBtn").addEventListener("click", async () => {
     document.getElementById("output").textContent = "Script injection failed.";
   }
 });
+
